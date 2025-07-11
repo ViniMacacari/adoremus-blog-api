@@ -1,7 +1,9 @@
 package com.blog.adoremus.api.controllers;
 
+import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +22,7 @@ public class LectioController {
     }
 
     @PostMapping("/nova")
-    public String novaLectio(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String, Object>> novaLectio(@RequestBody Map<String, String> body) {
         try {
             String livro = body.get("livro");
             String passagem = body.get("passagem");
@@ -30,9 +32,14 @@ public class LectioController {
 
             service.insertLectio(livro, passagem, texto, biblia, conteudo);
 
-            return "Lectio criada com sucesso!";
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            return "Erro ao criar lectio: " + e.getMessage();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("error", e.getMessage());
+            return ResponseEntity.badRequest().body(response);
         }
     }
 }
