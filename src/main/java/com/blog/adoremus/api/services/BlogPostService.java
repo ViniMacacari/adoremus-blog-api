@@ -13,10 +13,10 @@ public class BlogPostService {
         this.db = db;
     }
 
-    public void insertPost(String titulo, String subtitulo, String conteudo, String autor) {
+    public void insertPost(String titulo, String subtitulo, String conteudo, String autor, int categoria) {
         db.execUpdate(
-                "INSERT INTO postagens (titulo, subtitulo, conteudo, autor) VALUES (?, ?, ?, ?)",
-                titulo, subtitulo, conteudo, autor
+                "INSERT INTO postagens (titulo, subtitulo, conteudo, autor, categoria) VALUES (?, ?, ?, ?, ?)",
+                titulo, subtitulo, conteudo, autor, categoria
         );
     }
 }

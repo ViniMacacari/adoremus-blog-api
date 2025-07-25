@@ -22,14 +22,15 @@ public class BlogPostController {
     }
 
     @PostMapping("/novo")
-    public ResponseEntity<Map<String, Object>> novoPost(@RequestBody Map<String, String> body) {
+    public ResponseEntity<Map<String, Object>> novoPost(@RequestBody Map<String, Object> body) {
         try {
-            String titulo = body.get("titulo");
-            String subtitulo = body.get("subtitulo");
-            String conteudo = body.get("conteudo");
-            String autor = body.get("autor");
+            String titulo = (String) body.get("titulo");
+            String subtitulo = (String) body.get("subtitulo");
+            String conteudo = (String) body.get("conteudo");
+            String autor = (String) body.get("autor");
+            int categoria = ((Number) body.get("categoria")).intValue();
 
-            service.insertPost(titulo, subtitulo, conteudo, autor);
+            service.insertPost(titulo, subtitulo, conteudo, autor, categoria);
 
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
