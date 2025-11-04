@@ -28,24 +28,24 @@ public class LectioService {
 
     private int searchOrCreateText(String livro, String passagem, String texto, int biblia) {
         try (Connection conn = db.connect()) {
-            String sql = "SELECT id FROM passagens WHERE livro = ? AND passagem = ? AND biblia = ?";
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, Integer.parseInt(livro));
-            stmt.setString(2, passagem);
-            stmt.setInt(3, biblia);
+            String select = "SELECT id FROM passagens WHERE passagem = ? AND biblia = ?";
+            PreparedStatement stmt = conn.prepareStatement(select);
+            stmt.setString(1, passagem);
+            stmt.setInt(2, biblia);
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
                 return rs.getInt("id");
             }
 
-            sql = "INSERT INTO passagens (livro, passagem, texto, biblia) VALUES (?, ?, ?, ?) RETURNING id";
-            PreparedStatement insert = conn.prepareStatement(sql);
-            insert.setInt(1, Integer.parseInt(livro));
-            insert.setString(2, passagem);
-            insert.setString(3, texto);
-            insert.setInt(4, biblia);
-            ResultSet inserted = insert.executeQuery();
+            String insert = "INSERT INTO passagens (livro, passagem, texto, biblia) VALUES (?, ?, ?, ?) RETURNING id";
+            PreparedStatement psInsert = conn.prepareStatement(insert);
+            psInsert.setInt(1, Integer.parseInt(livro));
+            psInsert.setString(2, passagem);
+            psInsert.setString(3, texto);
+            psInsert.setInt(4, biblia);
+            ResultSet inserted = psInsert.executeQuery();
+
             if (inserted.next()) {
                 return inserted.getInt("id");
             }
